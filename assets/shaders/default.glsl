@@ -34,6 +34,39 @@ out vec4 color;
 
 void main()
 {
+    vec4 texColor;
+
+    switch (int(fTexID))
+    {
+        case 0:
+            texColor = fColor * texture(uTextures[0], fTexCoords);
+            break;
+        case 1:
+            texColor = fColor * texture(uTextures[1], fTexCoords);
+            break;
+        case 2:
+            texColor = fColor * texture(uTextures[2], fTexCoords);
+            break;
+        case 3:
+            texColor = fColor * texture(uTextures[3], fTexCoords);
+            break;
+        case 4:
+            texColor = fColor * texture(uTextures[4], fTexCoords);
+            break;
+        case 5:
+            texColor = fColor * texture(uTextures[5], fTexCoords);
+            break;
+        case 6:
+            texColor = fColor * texture(uTextures[6], fTexCoords);
+            break;
+        case 7:
+            texColor = fColor * texture(uTextures[7], fTexCoords);
+            break;
+    }
+
+    color = texColor;
+
+    /*
     if  (fTexID > 0)
     {
         color = fColor * texture(uTextures[int(fTexID)], fTexCoords);
@@ -41,5 +74,5 @@ void main()
     else
     {
         color = fColor;
-    }
+    }*/
 }

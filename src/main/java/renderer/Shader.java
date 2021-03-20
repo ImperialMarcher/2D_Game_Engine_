@@ -89,12 +89,12 @@ public class Shader
         if (glGetShaderi(vertexID, GL_COMPILE_STATUS) == GL_FALSE)
         {
             int length = glGetShaderi(vertexID, GL_INFO_LOG_LENGTH);
-            System.out.println("ERROR: '\" + filePath + \"'\n\tVertex shader compilation failed.");
+            System.out.println("ERROR [Shader]: '\" + filePath + \"'\n\tVertex shader compilation failed.");
             System.out.println(glGetShaderInfoLog(vertexID, length));
             assert false : "";
         }
 
-        // First load and compile the fragment shader
+        // Load and compile the fragment shader
         fragmentID = glCreateShader(GL_FRAGMENT_SHADER);
         // Pass the shader source to the GPU
         glShaderSource(fragmentID, fragmentSource);
@@ -104,7 +104,7 @@ public class Shader
         if (glGetShaderi(fragmentID, GL_COMPILE_STATUS) == GL_FALSE)
         {
             int length = glGetShaderi(fragmentID, GL_INFO_LOG_LENGTH);
-            System.out.println("ERROR: '\" + filePath + \"'\n\tFragment shader compilation failed.");
+            System.out.println("ERROR [Shader]: '\" + filePath + \"'\n\tFragment shader compilation failed.");
             System.out.println(glGetShaderInfoLog(fragmentID, length));
             assert false : "";
         }
@@ -119,7 +119,7 @@ public class Shader
         if (glGetProgrami(shaderProgramID, GL_LINK_STATUS) == GL_FALSE)
         {
             int length = glGetProgrami(shaderProgramID, GL_INFO_LOG_LENGTH);
-            System.out.println("ERROR: '" + filePath + "'\n\tLinking shaders failed.");
+            System.out.println("ERROR [Shader]: '" + filePath + "'\n\tLinking shaders failed.");
             System.out.println(glGetProgramInfoLog(shaderProgramID, length));
             assert false : "";
         }
