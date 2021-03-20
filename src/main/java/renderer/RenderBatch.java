@@ -19,29 +19,29 @@ public class RenderBatch implements Comparable<RenderBatch>
     // Pos              Color                           Tex co-ords     Tex ID
     // float, float,    float, float, float, float,     float, float,   float
     // =======================================================================
-    private int POS_SIZE = 2;
-    private int COLOR_SIZE = 4;
-    private int TEXTURE_COORDINATES_SIZE = 2;
-    private int TEXTURE_ID_SIZE = 1;
+    private final int POS_SIZE = 2;
+    private final int COLOR_SIZE = 4;
+    private final int TEXTURE_COORDINATES_SIZE = 2;
+    private final int TEXTURE_ID_SIZE = 1;
 
-    private int POS_OFFSET = 0;
-    private int COLOR_OFFSET = POS_OFFSET + POS_SIZE * Float.BYTES;
-    private int TEXTURE_COORDINATES_OFFSET = COLOR_OFFSET + COLOR_SIZE * Float.BYTES;
-    private int TEXTURE_ID_OFFSET = TEXTURE_COORDINATES_OFFSET + TEXTURE_COORDINATES_SIZE * Float.BYTES;
-    private int VERTEX_SIZE = 9;
-    private int VERTEX_SIZE_BYTES = VERTEX_SIZE * Float.BYTES;
+    private final int POS_OFFSET = 0;
+    private final int COLOR_OFFSET = POS_OFFSET + POS_SIZE * Float.BYTES;
+    private final int TEXTURE_COORDINATES_OFFSET = COLOR_OFFSET + COLOR_SIZE * Float.BYTES;
+    private final int TEXTURE_ID_OFFSET = TEXTURE_COORDINATES_OFFSET + TEXTURE_COORDINATES_SIZE * Float.BYTES;
+    private final int VERTEX_SIZE = 9;
+    private final int VERTEX_SIZE_BYTES = VERTEX_SIZE * Float.BYTES;
 
-    private SpriteRenderer[] sprites;
+    private final SpriteRenderer[] sprites;
     private int numSprites;
     private boolean hasRoom;
-    private float[] vertices;
-    private int[] texSlots = {0, 1, 2, 3, 4, 5, 6, 7};
+    private final float[] vertices;
+    private final int[] texSlots = {0, 1, 2, 3, 4, 5, 6, 7};
 
-    private List<Texture> textures;
+    private final List<Texture> textures;
     private int vaoID, vboID;
-    private int maxBatchSize;
-    private Shader shader;
-    private int zIndex;
+    private final int maxBatchSize;
+    private final Shader shader;
+    private final int zIndex;
 
     public RenderBatch(int maxBatchSize, int zIndex)
     {

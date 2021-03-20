@@ -17,7 +17,7 @@ public class Shader
     private boolean beingUsed;
 
     private String vertexSource, fragmentSource;
-    private String filePath;
+    private final String filePath;
 
     public Shader(String filePath)
     {
