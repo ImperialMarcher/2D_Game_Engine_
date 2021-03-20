@@ -1,5 +1,6 @@
 package jade;
 
+import imgui.ImGui;
 import jade.components.Sprite;
 import jade.components.SpriteRenderer;
 import jade.components.SpriteSheet;
@@ -20,20 +21,18 @@ public class LevelEditorScene extends Scene
 
         sprites = AssetPool.getSpriteSheet("assets/images/spriteSheet.png");
 
-        obj1 = new GameObject("Object 1", new Transform(new Vector2f(200, 100), new Vector2f(256, 256)), -1);
-        //obj1.addComponent(new SpriteRenderer(new Sprite(AssetPool.getTexture("assets/images/blendImage1.png"))));
-        obj1.addComponent(new SpriteRenderer(sprites.getSprite(0)));
+        obj1 = new GameObject("Object 1", new Transform(new Vector2f(200, 100), new Vector2f(256, 256)), 2);
+        obj1.addComponent(new SpriteRenderer(new Sprite(AssetPool.getTexture("assets/images/blendImage1.png"))));
         addGameObjectToScene(obj1);
 
-        GameObject obj2 = new GameObject("Object 2", new Transform(new Vector2f(400, 100), new Vector2f(256, 256)), 2);
-        //obj2.addComponent(new SpriteRenderer(new Sprite(AssetPool.getTexture("assets/images/blendImage2.png"))));
-        obj2.addComponent(new SpriteRenderer(sprites.getSprite(4)));
+        GameObject obj2 = new GameObject("Object 2", new Transform(new Vector2f(400, 100), new Vector2f(256, 256)), 3);
+        obj2.addComponent(new SpriteRenderer(new Sprite(AssetPool.getTexture("assets/images/blendImage2.png"))));
         addGameObjectToScene(obj2);
 
         GameObject obj3 = new GameObject("Object 3", new Transform(new Vector2f(600, 100), new Vector2f(256, 256)), 4);
-        //obj3.addComponent(new SpriteRenderer(new Sprite(AssetPool.getTexture("assets/images/testImage1.png"))));
-        obj3.addComponent(new SpriteRenderer(sprites.getSprite(5)));
+        obj3.addComponent(new SpriteRenderer(new Sprite(AssetPool.getTexture("assets/images/testImage1.png"))));
         addGameObjectToScene(obj3);
+        activeGameObject = obj3;
     }
 
     private void loadResources()
@@ -51,5 +50,13 @@ public class LevelEditorScene extends Scene
         }
 
         renderer.render();
+    }
+
+    @Override
+    public void imgui()
+    {
+        ImGui.begin("Test window");
+        ImGui.text("Some random text");
+        ImGui.end();
     }
 }

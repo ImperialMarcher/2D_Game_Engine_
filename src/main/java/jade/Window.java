@@ -18,9 +18,10 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class Window
 {
-    private final int width, height;
+    private int width, height;
     private final String title;
     private long glfwWindow;
+    private ImGuiLayer imGuiLayer;
 
     public float r, g, b, a;
 
@@ -110,9 +111,11 @@ public class Window
         glfwSetCursorPosCallback(glfwWindow, MouseListener::mousePosCallback);
         glfwSetMouseButtonCallback(glfwWindow, MouseListener::mouseButtonCallback);
         glfwSetScrollCallback(glfwWindow, MouseListener::mouseScrollCallback);
-
-        // Setup a key callback. It will be called every time a key is pressed, repeated or released.
         glfwSetKeyCallback(glfwWindow, KeyListener::keyCallback);
+        glfwSetWindowSizeCallback(glfwWindow, (w, newWidth, newHeight) -> {
+            Window.setWidth(newWidth);
+            Window.setHeight(newHeight);
+        });
 
         // Get the thread stack and push a new frame
         try ( MemoryStack stack = stackPush() ) {
@@ -151,6 +154,8 @@ public class Window
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+        imGuiLayer = new ImGuiLayer(glfwWindow);
+        imGuiLayer.initImGui();
 
         Window.changeScene(0);
     }
@@ -174,6 +179,7 @@ public class Window
                 currentScene.update(deltaTime);
             }
 
+            imGuiLayer.update(deltaTime, currentScene);
             glfwSwapBuffers(glfwWindow); // swap the color buffers
 
             // Poll for window events. The key callback above will only be
@@ -184,5 +190,25 @@ public class Window
             deltaTime = endTime - beginTime;
             beginTime = endTime;
         }
+    }
+
+    public static int getWidth()
+    {
+        return get().width;
+    }
+
+    public static int getHeight()
+    {
+        return get().height;
+    }
+
+    public static void setWidth(int width)
+    {
+        get().width = width;
+    }
+
+    public static void setHeight(int height)
+    {
+        get().height = height;
     }
 }
