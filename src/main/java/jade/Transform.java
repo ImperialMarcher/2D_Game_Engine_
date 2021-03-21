@@ -34,14 +34,14 @@ public class Transform
     }
 
     @Override
-    public boolean equals(Object o)
+    public boolean equals(Object object)
     {
-        if (!(o instanceof Transform))
+        if (!(object instanceof Transform))
         {
             return false;
         }
 
-        Transform transform = (Transform)o;
+        Transform transform = (Transform)object;
 
         return transform.position.equals(position) && transform.scale.equals(scale);
     }

@@ -5,24 +5,13 @@ import renderer.Texture;
 
 public class Sprite
 {
-    private final Texture texture;
-    private final Vector2f[] textureCoordinates;
-
-    public Sprite(Texture texture)
-    {
-        this(texture, new Vector2f[] {
-                new Vector2f(1, 1),
-                new Vector2f(1, 0),
-                new Vector2f(0, 0),
-                new Vector2f(0, 1)
-        });
-    }
-
-    public Sprite(Texture texture, Vector2f[] textureCoordinates)
-    {
-        this.texture = texture;
-        this.textureCoordinates = textureCoordinates;
-    }
+    private Texture texture = null;
+    private Vector2f[] textureCoordinates = {
+            new Vector2f(1, 1),
+            new Vector2f(1, 0),
+            new Vector2f(0, 0),
+            new Vector2f(0, 1)
+    };
 
     public Texture getTexture()
     {
@@ -32,5 +21,15 @@ public class Sprite
     public Vector2f[] getTextureCoordinates()
     {
         return textureCoordinates;
+    }
+
+    public void setTexture(Texture texture)
+    {
+        this.texture = texture;
+    }
+
+    public void setTextureCoordinates(Vector2f[] textureCoordinates)
+    {
+        this.textureCoordinates = textureCoordinates;
     }
 }

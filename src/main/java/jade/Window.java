@@ -34,9 +34,9 @@ public class Window
         width = 1920;
         height = 1080;
         title = "Mario";
-        r = 0.2f;
-        g = 0.5f;
-        b = 0.6f;
+        r = 1.0f;
+        g = 1.0f;
+        b = 1.0f;
         a = 1.0f;
     }
 

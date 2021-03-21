@@ -2,7 +2,6 @@ package jade.components;
 
 import imgui.ImGui;
 import jade.Component;
-import jade.ImGuiLayer;
 import jade.Transform;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
@@ -10,28 +9,11 @@ import renderer.Texture;
 
 public class SpriteRenderer extends Component
 {
-    private final Vector4f color;
-    private Sprite sprite;
+    private final Vector4f color = new Vector4f(1.0f, 1.0f, 1.0f, 1.0f);
+    private Sprite sprite = new Sprite();
 
-    private Transform lastTransform;
-    private boolean isDirty;
-
-    public SpriteRenderer(Vector4f color)
-    {
-        this(color, new Sprite(null));
-    }
-
-    public SpriteRenderer(Sprite sprite)
-    {
-        this(new Vector4f(1, 1, 1, 1), sprite);
-    }
-
-    public SpriteRenderer(Vector4f color, Sprite sprite)
-    {
-        this.color = color;
-        this.sprite = sprite;
-        isDirty = true;
-    }
+    private transient Transform lastTransform;
+    private transient boolean isDirty;
 
     @Override
     public void start()

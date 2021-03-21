@@ -78,7 +78,7 @@ public class GameObject
         }
     }
 
-    public  void imgui()
+    public void imgui()
     {
         for (Component c : components)
         {

@@ -98,7 +98,7 @@ public class RenderBatch implements Comparable<RenderBatch>
 
         if (sprite.getTexture() != null)
         {
-            if (!textures.contains(sprite.getTexture()))
+            if (!hasTexture(sprite.getTexture()))
             {
                 textures.add(sprite.getTexture());
             }
@@ -176,7 +176,7 @@ public class RenderBatch implements Comparable<RenderBatch>
         Vector2f[] textureCoordinates = sprite.getTextureCoordinates();
         int texID = 0;
 
-        if  (sprite.getTexture() != null)
+        if (sprite.getTexture() != null)
         {
             for (int i = 0; i < textures.size(); i++)
             {
