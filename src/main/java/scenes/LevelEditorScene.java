@@ -8,7 +8,9 @@ import jade.GameObject;
 import jade.Prefabs;
 import jade.Transform;
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 import org.joml.Vector4f;
+import renderer.DebugDraw;
 import util.AssetPool;
 
 public class LevelEditorScene extends Scene
@@ -39,7 +41,7 @@ public class LevelEditorScene extends Scene
         obj1.addComponent(new RigidBody());
         addGameObjectToScene(obj1);
 
-        GameObject obj2 = new GameObject("Object 2", new Transform(new Vector2f(400, 100), new Vector2f(256, 256)), 3);
+        GameObject obj2 = new GameObject("Object 2", new Transform(new Vector2f(400, 100), new Vector2f(256, 256)), 5);
         SpriteRenderer obj2SpriteRenderer = new SpriteRenderer();
         Sprite obj2Sprite = new Sprite();
         obj2Sprite.setTexture(AssetPool.getTexture("assets/images/testImage2.png"));
@@ -61,10 +63,17 @@ public class LevelEditorScene extends Scene
         AssetPool.getTexture("assets/images/testImage2.png");
     }
 
+    float t = 0.0f;
+
     @Override
     public void update(float deltaTime)
     {
         mouseControls.update(deltaTime);
+
+        float x = ((float)Math.sin(t) * 200.0f) + 600.0f;
+        float y = ((float)Math.cos(t) * 200.0f) + 400.0f;
+        t += 0.05f;
+        DebugDraw.addLine2D(new Vector2f(600.0f, 400.0f), new Vector2f(x, y), new Vector3f(0.0f, 0.0f, 1.0f));
 
         for (GameObject go : gameObjects)
         {

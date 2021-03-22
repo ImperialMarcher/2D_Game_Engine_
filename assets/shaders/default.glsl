@@ -18,7 +18,8 @@ void main()
     fColor = aColor;
     fTexCoords = aTexCoords;
     fTexID = aTexID;
-    gl_Position = uProjection * uView * vec4(aPos, 1.0);
+
+    gl_Position = uProjection * uView * vec4(aPos, 1.0f);
 }
 
 #type fragment
@@ -39,7 +40,7 @@ void main()
     switch (int(fTexID))
     {
         case 0:
-            texColor = fColor * texture(uTextures[0], fTexCoords);
+            texColor = fColor;
             break;
         case 1:
             texColor = fColor * texture(uTextures[1], fTexCoords);

@@ -5,6 +5,7 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
+import renderer.DebugDraw;
 import scenes.LevelEditorScene;
 import scenes.LevelScene;
 import scenes.Scene;
@@ -172,6 +173,12 @@ public class Window
         // the window.
         while (!glfwWindowShouldClose(glfwWindow))
         {
+            // Poll for window events. The key callback above will only be
+            // invoked during this call.
+            glfwPollEvents();
+
+            DebugDraw.beginFrame();
+
             // Set the clear color
             glClearColor(r, g, b, a);
             // Clear the framebuffer
@@ -179,15 +186,12 @@ public class Window
 
             if (deltaTime >= 0)
             {
+                DebugDraw.draw();
                 currentScene.update(deltaTime);
             }
 
             imGuiLayer.update(deltaTime, currentScene);
             glfwSwapBuffers(glfwWindow); // swap the color buffers
-
-            // Poll for window events. The key callback above will only be
-            // invoked during this call.
-            glfwPollEvents();
 
             endTime = (float)glfwGetTime();
             deltaTime = endTime - beginTime;

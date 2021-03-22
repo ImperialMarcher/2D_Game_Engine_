@@ -7,9 +7,9 @@
         "type": "components.SpriteRenderer",
         "properties": {
           "color": {
-            "x": 1.0,
-            "y": 0.0,
-            "z": 0.0,
+            "x": 0.0236954,
+            "y": 0.4889868,
+            "z": 0.42134526,
             "w": 1.0
           },
           "sprite": {
@@ -118,7 +118,7 @@
         "y": 256.0
       }
     },
-    "zIndex": 3
+    "zIndex": 5
   },
   {
     "uid": 2,

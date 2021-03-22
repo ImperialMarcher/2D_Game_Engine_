@@ -60,6 +60,8 @@ public class Texture
             assert false : "ERROR [Texture]: Could not load image '" + filePath + "'";
         }
 
+        System.out.println(textureID);
+
         stbi_image_free(image);
     }
 
