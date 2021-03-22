@@ -1,10 +1,12 @@
-package jade.components;
+package components;
 
 import org.joml.Vector2f;
 import renderer.Texture;
 
 public class Sprite
 {
+    private float width, height;
+
     private Texture texture = null;
     private Vector2f[] textureCoordinates = {
             new Vector2f(1, 1),
@@ -12,6 +14,26 @@ public class Sprite
             new Vector2f(0, 0),
             new Vector2f(0, 1)
     };
+
+    public float getWidth()
+    {
+        return width;
+    }
+
+    public void setWidth(float width)
+    {
+        this.width = width;
+    }
+
+    public float getHeight()
+    {
+        return height;
+    }
+
+    public void setHeight(float height)
+    {
+        this.height = height;
+    }
 
     public Texture getTexture()
     {
@@ -31,5 +53,10 @@ public class Sprite
     public void setTextureCoordinates(Vector2f[] textureCoordinates)
     {
         this.textureCoordinates = textureCoordinates;
+    }
+
+    public int getTextureID()
+    {
+        return texture == null ? -1 : texture.getTextureID();
     }
 }

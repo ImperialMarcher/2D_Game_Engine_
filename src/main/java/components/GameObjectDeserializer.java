@@ -1,7 +1,6 @@
-package jade.components;
+package components;
 
 import com.google.gson.*;
-import jade.Component;
 import jade.GameObject;
 import jade.Transform;
 

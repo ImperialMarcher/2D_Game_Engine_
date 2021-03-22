@@ -1,7 +1,12 @@
-package jade;
+package scenes;
 
+import components.*;
 import imgui.ImGui;
-import jade.components.*;
+import imgui.ImVec2;
+import jade.Camera;
+import jade.GameObject;
+import jade.Prefabs;
+import jade.Transform;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 import util.AssetPool;
@@ -11,6 +16,7 @@ public class LevelEditorScene extends Scene
     private GameObject obj1;
     private SpriteSheet sprites;
     SpriteRenderer obj1SpriteRenderer;
+    MouseControls mouseControls = new MouseControls();
 
     @Override
     public void init()
@@ -18,14 +24,13 @@ public class LevelEditorScene extends Scene
         loadResources();
 
         camera = new Camera(new Vector2f());
+        sprites = AssetPool.getSpriteSheet("assets/images/spriteSheets/decorationsAndBlocks.png");
 
         if (levelLoaded)
         {
             activeGameObject = gameObjects.get(0);
             return;
         }
-
-        sprites = AssetPool.getSpriteSheet("assets/images/spriteSheet.png");
 
         obj1 = new GameObject("Object 1", new Transform(new Vector2f(200, 100), new Vector2f(256, 256)), 2);
         obj1SpriteRenderer = new SpriteRenderer();
@@ -52,13 +57,15 @@ public class LevelEditorScene extends Scene
     private void loadResources()
     {
         AssetPool.getShader("assets/shaders/default.glsl");
-        AssetPool.addSpriteSheet("assets/images/spriteSheet.png", new SpriteSheet(AssetPool.getTexture("assets/images/spriteSheet.png"), 16, 16, 26, 0));
+        AssetPool.addSpriteSheet("assets/images/spriteSheets/decorationsAndBlocks.png", new SpriteSheet(AssetPool.getTexture("assets/images/spriteSheets/decorationsAndBlocks.png"), 16, 16, 81, 0));
         AssetPool.getTexture("assets/images/testImage2.png");
     }
 
     @Override
     public void update(float deltaTime)
     {
+        mouseControls.update(deltaTime);
+
         for (GameObject go : gameObjects)
         {
             go.update(deltaTime);
@@ -71,7 +78,44 @@ public class LevelEditorScene extends Scene
     public void imgui()
     {
         ImGui.begin("Test window");
-        ImGui.text("Some random text");
+
+        ImVec2 windowPosition = new ImVec2();
+        ImGui.getWindowPos(windowPosition);
+        ImVec2 windowSize = new ImVec2();
+        ImGui.getWindowSize(windowSize);
+        ImVec2 itemSpacing = new ImVec2();
+        ImGui.getStyle().getItemSpacing(itemSpacing);
+        float windowX2 = windowPosition.x + windowSize.x;
+
+        for (int i = 0; i < sprites.size(); i++)
+        {
+            Sprite sprite = sprites.getSprite(i);
+            float spriteWidth = sprite.getWidth() * 4;
+            float spriteHeight = sprite.getHeight() * 4;
+            int id = sprite.getTextureID();
+            Vector2f[] textureCoordinates = sprite.getTextureCoordinates();
+
+            ImGui.pushID(i);
+
+            if (ImGui.imageButton(id, spriteWidth, spriteHeight, textureCoordinates[0].x, textureCoordinates[0].y, textureCoordinates[2].x, textureCoordinates[2].y))
+            {
+                GameObject object = Prefabs.generateSpriteObject(sprite, spriteWidth, spriteHeight);
+                mouseControls.pickupObject(object);
+            }
+
+            ImGui.popID();
+
+            ImVec2 lastButtonPos = new ImVec2();
+            ImGui.getItemRectMax(lastButtonPos);
+            float lastButtonX2 = lastButtonPos.x;
+            float nextButtonX2 = lastButtonX2 + itemSpacing.x + spriteWidth;
+
+            if (i + 1 < sprites.size() && nextButtonX2 < windowX2)
+            {
+                ImGui.sameLine();
+            }
+        }
+
         ImGui.end();
     }
 }

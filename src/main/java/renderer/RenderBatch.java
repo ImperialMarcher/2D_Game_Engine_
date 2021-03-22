@@ -1,7 +1,7 @@
 package renderer;
 
 import jade.Window;
-import jade.components.SpriteRenderer;
+import components.SpriteRenderer;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2f;
 import org.joml.Vector4f;

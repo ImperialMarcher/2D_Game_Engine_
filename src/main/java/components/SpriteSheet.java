@@ -1,4 +1,4 @@
-package jade.components;
+package components;
 
 import org.joml.Vector2f;
 import renderer.Texture;
@@ -36,6 +36,8 @@ public class SpriteSheet
             Sprite sprite = new Sprite();
             sprite.setTexture(texture);
             sprite.setTextureCoordinates(textureCoordinates);
+            sprite.setWidth(spriteWidth);
+            sprite.setHeight(spriteHeight);
             sprites.add(sprite);
 
             currentX += spriteWidth + spacing;
@@ -48,13 +50,13 @@ public class SpriteSheet
         }
     }
 
-    public Texture getTexture()
-    {
-        return texture;
-    }
-
     public Sprite getSprite(int index)
     {
         return sprites.get(index);
+    }
+
+    public int size()
+    {
+        return sprites.size();
     }
 }
