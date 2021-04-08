@@ -11,8 +11,28 @@ import static org.lwjgl.stb.STBImage.*;
 public class Texture
 {
     private String filePath;
-    private int textureID;
+    private transient int textureID;
     private int width, height;
+
+    public Texture()
+    {
+        textureID = -1;
+        width = -1;
+        height = -1;
+    }
+    public Texture(int width, int height)
+    {
+        filePath = "Generated";
+
+        // Generate texture on GPU
+        textureID = glGenTextures();
+        bind();
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+    }
 
     public void init(String filePath)
     {
@@ -88,5 +108,23 @@ public class Texture
     public int getTextureID()
     {
         return textureID;
+    }
+
+    public String getFilePath()
+    {
+        return filePath;
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (!(o instanceof Texture))
+        {
+            return false;
+        }
+
+        Texture texture = (Texture)o;
+
+        return texture.getWidth() == width && texture.getHeight() == height && texture.getTextureID() == textureID && texture.getFilePath().equals(filePath);
     }
 }

@@ -10,6 +10,7 @@ import jade.Transform;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+import org.lwjgl.system.CallbackI;
 import renderer.DebugDraw;
 import util.AssetPool;
 
@@ -18,11 +19,14 @@ public class LevelEditorScene extends Scene
     private GameObject obj1;
     private SpriteSheet sprites;
     SpriteRenderer obj1SpriteRenderer;
-    MouseControls mouseControls = new MouseControls();
+    GameObject levelEditorStuff = new GameObject("LevelEditor", new Transform(new Vector2f()), 0);
 
     @Override
     public void init()
     {
+        levelEditorStuff.addComponent(new MouseControls());
+        levelEditorStuff.addComponent(new GridLines());
+
         loadResources();
 
         camera = new Camera(new Vector2f());
@@ -30,30 +34,15 @@ public class LevelEditorScene extends Scene
 
         if (levelLoaded)
         {
-            activeGameObject = gameObjects.get(0);
+            if(gameObjects.size() > 0)
+            {
+                activeGameObject = gameObjects.get(0);
+            }
+
             return;
         }
 
-        obj1 = new GameObject("Object 1", new Transform(new Vector2f(200, 100), new Vector2f(256, 256)), 2);
-        obj1SpriteRenderer = new SpriteRenderer();
-        obj1SpriteRenderer.setColor(new Vector4f(1.0f, 0.0f, 0.0f, 1.0f));
-        obj1.addComponent(obj1SpriteRenderer);
-        obj1.addComponent(new RigidBody());
-        addGameObjectToScene(obj1);
 
-        GameObject obj2 = new GameObject("Object 2", new Transform(new Vector2f(400, 100), new Vector2f(256, 256)), 5);
-        SpriteRenderer obj2SpriteRenderer = new SpriteRenderer();
-        Sprite obj2Sprite = new Sprite();
-        obj2Sprite.setTexture(AssetPool.getTexture("assets/images/testImage2.png"));
-        obj2SpriteRenderer.setSprite(obj2Sprite);
-        obj2.addComponent(obj2SpriteRenderer);
-        addGameObjectToScene(obj2);
-
-        GameObject obj3 = new GameObject("Object 3", new Transform(new Vector2f(600, 100), new Vector2f(256, 256)), 4);
-        SpriteRenderer obj3SpriteRenderer = new SpriteRenderer();
-        obj3SpriteRenderer.setColor(new Vector4f(1.0f, 0.0f, 0.0f, 1.0f));
-        obj3.addComponent(obj3SpriteRenderer);
-        addGameObjectToScene(obj3);
     }
 
     private void loadResources()
@@ -61,19 +50,32 @@ public class LevelEditorScene extends Scene
         AssetPool.getShader("assets/shaders/default.glsl");
         AssetPool.addSpriteSheet("assets/images/spriteSheets/decorationsAndBlocks.png", new SpriteSheet(AssetPool.getTexture("assets/images/spriteSheets/decorationsAndBlocks.png"), 16, 16, 81, 0));
         AssetPool.getTexture("assets/images/testImage2.png");
+
+        for (GameObject go : gameObjects)
+        {
+            if (go.getComponent(SpriteRenderer.class) != null)
+            {
+                SpriteRenderer sr = go.getComponent(SpriteRenderer.class);
+
+                if (sr.getTexture() != null)
+                {
+                    sr.setTexture(AssetPool.getTexture(sr.getTexture().getFilePath()));
+                }
+            }
+        }
     }
 
-    float t = 0.0f;
+    float x = 0.0f;
+    float y = 0.0f;
 
     @Override
     public void update(float deltaTime)
     {
-        mouseControls.update(deltaTime);
+        levelEditorStuff.update(deltaTime);
 
-        float x = ((float)Math.sin(t) * 200.0f) + 600.0f;
-        float y = ((float)Math.cos(t) * 200.0f) + 400.0f;
-        t += 0.05f;
-        DebugDraw.addLine2D(new Vector2f(600.0f, 400.0f), new Vector2f(x, y), new Vector3f(0.0f, 0.0f, 1.0f));
+        DebugDraw.addCircle(new Vector2f(x, y), 64.0f, new Vector3f(0.0f, 0.0f, 1.0f), 1);
+        x += 50.0f * deltaTime;
+        y += 50.0f * deltaTime;
 
         for (GameObject go : gameObjects)
         {
@@ -106,10 +108,10 @@ public class LevelEditorScene extends Scene
 
             ImGui.pushID(i);
 
-            if (ImGui.imageButton(id, spriteWidth, spriteHeight, textureCoordinates[0].x, textureCoordinates[0].y, textureCoordinates[2].x, textureCoordinates[2].y))
+            if (ImGui.imageButton(id, spriteWidth, spriteHeight, textureCoordinates[2].x, textureCoordinates[0].y, textureCoordinates[0].x, textureCoordinates[2].y))
             {
-                GameObject object = Prefabs.generateSpriteObject(sprite, spriteWidth, spriteHeight);
-                mouseControls.pickupObject(object);
+                GameObject object = Prefabs.generateSpriteObject(sprite, 32, 32);
+                levelEditorStuff.getComponent(MouseControls.class).pickupObject(object);
             }
 
             ImGui.popID();

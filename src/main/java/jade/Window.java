@@ -6,6 +6,7 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 import renderer.DebugDraw;
+import renderer.FrameBuffer;
 import scenes.LevelEditorScene;
 import scenes.LevelScene;
 import scenes.Scene;
@@ -26,6 +27,7 @@ public class Window
     private final String title;
     private long glfwWindow;
     private ImGuiLayer imGuiLayer;
+    private FrameBuffer frameBuffer;
 
     public float r, g, b, a;
 
@@ -161,6 +163,9 @@ public class Window
         imGuiLayer = new ImGuiLayer(glfwWindow);
         imGuiLayer.initImGui();
 
+        frameBuffer = new FrameBuffer(width, height);
+        glViewport(0, 0, width, height);
+
         Window.changeScene(0);
     }
 
@@ -179,6 +184,8 @@ public class Window
 
             DebugDraw.beginFrame();
 
+            frameBuffer.bind();
+
             // Set the clear color
             glClearColor(r, g, b, a);
             // Clear the framebuffer
@@ -190,6 +197,7 @@ public class Window
                 currentScene.update(deltaTime);
             }
 
+            frameBuffer.unbind();
             imGuiLayer.update(deltaTime, currentScene);
             glfwSwapBuffers(glfwWindow); // swap the color buffers
 
@@ -219,5 +227,15 @@ public class Window
     public static void setHeight(int height)
     {
         get().height = height;
+    }
+
+    public static FrameBuffer getFrameBuffer()
+    {
+        return get().frameBuffer;
+    }
+
+    public static float getTargetAspectRatio()
+    {
+        return 16.0f / 9.0f;
     }
 }
